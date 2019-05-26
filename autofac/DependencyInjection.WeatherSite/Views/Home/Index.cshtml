@@ -1,0 +1,49 @@
+﻿@model CityForecast
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bem vindo!</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">Informe a cidade para consultar o clima</a>.</p>
+</div>
+<form asp-controller="Home" asp-action="GetWeather">
+    <div class="text-center">
+        <label for="CityName">Nome da cidade:&nbsp;&nbsp;</label>
+        <input id="CityName" type="text" placeholder="Barueri, São Paulo, Br" asp-for="Query" />
+    </div>
+    <div class="text-center">
+        <input class="btn-success" type="submit" value="Buscar" />
+    </div>
+</form>
+
+<br />
+
+@if (Model?.Forecasts != null)
+{
+    @for (int i = 0; i < Model.Forecasts.Count; i++)
+    {
+        var f = Model.Forecasts[i];
+
+        if (i % 3 == 0)
+        {
+            @:<div class="row">
+        }
+
+        <div class="col-sm-4">
+            <div class="card text-white bg-primary mb-3" style="width: 18rem;">
+                <div class="card-header">@f.Date.ToString("dd/MM/yyyy HH:mm")</div>
+                <div class="card-body">
+                    <h5 class="card-title">@f.MaxTemperature.ToString()°C/@f.MinTemperature.ToString()°C</h5>
+                    <p class="card-text">Clima: @f.WeatherCondition.ToString()</p>
+                </div>
+            </div>
+        </div>
+
+        @if (i % 3 == 2)
+        {
+            @:</div>
+        }
+    }
+}
